@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, Form } from 'semantic-ui-react';
+import { Container, Form, Button, Input } from 'semantic-ui-react';
 
 class LogIn extends Component {
 
@@ -8,7 +8,6 @@ class LogIn extends Component {
     super(props);
 
     this.state = {
-      logStatus: false,
       email: '',
       password: ''
     }
@@ -35,31 +34,40 @@ class LogIn extends Component {
   logOut(event) {
     Parse.User.logOut().then(() => {
       console.log(Parse.User.current());
+      this.setState({
+        logStatus: false
+      })
     })
     event.preventDefault();
   }
 
   logUser(event) {
     console.log(Parse.User.current());
-    event.preventDefault();
+    if (event != null)
+      event.preventDefault();
   }
 
   logIn(event) {
     Parse.User.logIn(this.state.email, this.state.password, {
-      success: function(user) {
-        console.log(user)
+      success: (user) => {
+        console.log("User signed in ")
+        this.logUser(null)
         this.setState({
           logStatus : true,
           email: '',
           password: ''
+        }, () => {
+          this.props.toUpdate(true)
         })
       },
-      error: function(user) {
+      error: (user) => {
         console.log(user)
         this.setState({
           logStatus : false,
           email: '',
           password: ''
+        }, () => {
+          this.props.toUpdate(false)
         })
       }
     })
@@ -67,21 +75,29 @@ class LogIn extends Component {
     event.preventDefault();
   }
 
+  componentWillUpdate() {
+    if(this.state.logStatus === true)
+      console.log("User is cool")
+    else
+      console.log("No User :-(")
+  }
+
   render() {
+    console.log("Update state Login")
     return (
       <div className="LogIn">
         <Container textAlign="center">
-        <form onSubmit={this.logIn}>
-          <label>
-            Name:
-            <input id="user_email" type="email" value={this.state.email} onChange={this.emailChange} />
-          </label>
-          <label>
-            Password:
-            <input id="user_password" type="password" value={this.state.password} onChange={this.passwordChange} />
-          </label>
-          <input type="submit" value="Log In" />
-        </form>
+          <Form onSubmit={this.logIn}>
+            <Form.Field>
+              <label>Email</label>
+              <Input type="email" value={this.state.email} onChange={this.emailChange} />
+            </Form.Field>
+            <Form.Field>
+              <label>Password</label>
+              <Input type="password" value={this.state.password} onChange={this.passwordChange} />
+            </Form.Field>
+            <Form.Field control={Button}>Log In</Form.Field>
+          </Form>
         </Container>
       </div>
     );
