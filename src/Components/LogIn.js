@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Container, Form, Button, Input } from 'semantic-ui-react';
+import sweetAlert from 'sweetalert'
 
 class LogIn extends Component {
 
@@ -15,6 +16,7 @@ class LogIn extends Component {
     this.logOut = this.logOut.bind(this);
     this.logUser = this.logUser.bind(this);
     this.logIn = this.logIn.bind(this);
+    this.signUp = this.signUp.bind(this);
     this.emailChange = this.emailChange.bind(this);
     this.passwordChange = this.passwordChange.bind(this);
   }
@@ -62,6 +64,7 @@ class LogIn extends Component {
       },
       error: (user) => {
         console.log(user)
+        sweetAlert("Oops...", "Cannot Sign In! Try Again.", "error");
         this.setState({
           logStatus : false,
           email: '',
@@ -82,6 +85,37 @@ class LogIn extends Component {
       console.log("No User :-(")
   }
 
+  signUp() {
+    var user = new Parse.User();
+    user.set("username", this.state.email);
+    user.set("password", this.state.password);
+    user.set("email", this.state.email);
+    user.signUp(null, {
+      success: (user) => {
+        // Hooray! Let them use the app now.
+        this.setState({
+          logStatus : true,
+          email: '',
+          password: ''
+        }, () => {
+          this.props.toUpdate(true);
+        })
+      },
+      error: (user, error) => {
+        // Show the error message somewhere and let the user try again.
+        console.log("Error: " + error.code + " " + error.message);
+        sweetAlert("Oops...", "Cannot Register! Try Again.", "error");
+        this.setState({
+          logStatus : false,
+          email: '',
+          password: ''
+        }, () => {
+          this.props.toUpdate(false);
+        })
+      }
+    });
+  }
+
   render() {
     console.log("Update state Login")
     return (
@@ -96,7 +130,10 @@ class LogIn extends Component {
               <label>Password</label>
               <Input type="password" value={this.state.password} onChange={this.passwordChange} />
             </Form.Field>
-            <Form.Field control={Button}>Log In</Form.Field>
+            <Form.Group>
+              <Form.Field control={Button} primary>Log In</Form.Field>
+              <Button onClick={this.signUp}>Register</Button>
+            </Form.Group>
           </Form>
         </Container>
       </div>
