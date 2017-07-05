@@ -19,6 +19,7 @@ class NoteComp extends Component {
     this.editNote = this.editNote.bind(this)
     this.updateNote = this.updateNote.bind(this)
     this.cancelUpdate = this.cancelUpdate.bind(this)
+    this.deleteNote = this.deleteNote.bind(this)
     this.updateList()
   }
 
@@ -90,6 +91,17 @@ class NoteComp extends Component {
       });
   }
 
+  deleteNote(note) {
+      note.destroy({
+          success: (note) => {
+              this.updateList();
+          },
+          error: (note, err) => {
+              console.log(err);
+          }
+      })
+  }
+
   render() {
       var editNoteElement = <EditNote updateNote={this.updateNote} tobeUpdated={this.state.toUpdate} cancelUpdate={this.cancelUpdate}/>
       if(this.state.toUpdate === null)
@@ -98,7 +110,7 @@ class NoteComp extends Component {
       return (
         <Segment style={{margin: "30px"}}>
             <AddNote addNewNote={this.addNewNote}/>
-            <NotesList notesList={this.state.notesList} editNote={this.editNote} />
+            <NotesList notesList={this.state.notesList} editNote={this.editNote} deleteNote={this.deleteNote} />
             {editNoteElement}
         </Segment>
       )

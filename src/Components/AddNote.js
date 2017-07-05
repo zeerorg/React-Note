@@ -28,7 +28,7 @@ class AddNote extends Component {
       return (
         <Container textAlign="center">
           <Form onSubmit={this.addNote}>
-            <TextArea placeholder="Add a note" style={{ minHeight: 100 }} value={this.state.text} onChange={this.textChange}/>
+            <TextArea placeholder="Add a note" style={{ minHeight: 100, marginBottom: '30px', marginTop: '30px' }} value={this.state.text} onChange={this.textChange}/>
             <Form.Field control={Button}>Add</Form.Field>
           </Form>
         </Container>

@@ -7,10 +7,15 @@ class NotesList extends Component {
       super(props)
 
       this.editNote = this.editNote.bind(this)
+      this.deleteNote = this.deleteNote.bind(this)
   }
 
   editNote(note) {
       this.props.editNote(note);
+  }
+
+  deleteNote(note) {
+      this.props.deleteNote(note)
   }
 
   render() {
@@ -19,6 +24,9 @@ class NotesList extends Component {
             <List.Item key={note.id} style={{padding: '15px'}}>
                 <List.Content>
                     <List.Header style={{float: "left"}}>{note.get("data")}</List.Header>
+                    <Button negative icon style={{float: "right"}} onClick={() => this.deleteNote(note)}>
+                        <Icon name='remove' />
+                    </Button>
                     <Button icon style={{float: "right"}} onClick={() => this.editNote(note)}>
                         <Icon name='write' />
                     </Button>

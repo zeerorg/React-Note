@@ -30,9 +30,11 @@ class EditNote extends Component {
           <Modal.Header>Edit</Modal.Header>
           <Modal.Content>
             <Form onSubmit={this.updateNote}>
-                <TextArea placeholder="Edit Note" style={{ minHeight: 100 }} value={this.state.text} onChange={this.textChange}/>
-                <Form.Field control={Button}>Okay</Form.Field>
-                <Button onClick={this.props.cancelUpdate}>Cancel</Button>
+                <TextArea placeholder="Edit Note" style={{ minHeight: 100, marginBottom: '30px' }} value={this.state.text} onChange={this.textChange}/>
+                <Form.Group>
+                    <Form.Button primary>Okay</Form.Button>
+                    <Button negative onClick={this.props.cancelUpdate}>Cancel</Button>
+                </Form.Group>
             </Form>
           </Modal.Content>
         </Modal>
