@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Menu, Modal, List } from 'semantic-ui-react'
+import { Menu, Modal } from 'semantic-ui-react'
 // import logo from './logo.svg';
 import './App.css';
 import Parse from 'parse';
 import LogIn from './Components/LogIn';
+import NoteComp from './NoteComp';
 
 class App extends Component {
 
@@ -19,7 +20,6 @@ class App extends Component {
     this.state = {
       logStatus: st
     }
-
 
     this.updateLogState = this.updateLogState.bind(this)
     this.logOut = this.logOut.bind(this)
@@ -50,8 +50,11 @@ class App extends Component {
 
   render() {
     var user = <div></div>
-    if(this.state.logStatus)
+    var notecomp = <div></div>
+    if(this.state.logStatus) {
       user = <Menu.Item header>{Parse.User.current().get("username")}</Menu.Item>;
+      notecomp = <NoteComp />
+    }
 
     return (
       <div className="App">
@@ -62,26 +65,7 @@ class App extends Component {
             <Menu.Item name='Log Out' onClick={this.logOut}/>
           </Menu.Menu>
         </Menu>
-        {/*<Segment>
-          <LogIn />
-        </Segment>*/}
-        {/*<List divided verticalAlign='middle' size="massive">
-          <List.Item style={{padding: '30px'}}>
-            <List.Content>
-              <List.Header as='a'>Daniel Louise</List.Header>
-            </List.Content>
-          </List.Item>
-          <List.Item>
-            <List.Content>
-              <List.Header as='a'>Stevie Feliciano</List.Header>
-            </List.Content>
-          </List.Item>
-          <List.Item>
-            <List.Content>
-              <List.Header as='a'>Elliot Fu</List.Header>
-            </List.Content>
-          </List.Item>
-        </List>*/}
+        {notecomp}
         <Modal open={this.state.logStatus === false} size="small">
           <Modal.Header>Log In</Modal.Header>
           <Modal.Content>
