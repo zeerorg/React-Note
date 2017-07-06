@@ -23,12 +23,13 @@ class NoteComp extends Component {
     this.updateList()
   }
 
-  addNewNote(text) {
+  addNewNote(text, title) {
     var Note = Parse.Object.extend("Note");
     var note = new Note();
     var t = new Date().getTime()
     console.log(t)
     note.set("data", text);
+    note.set("title", title);
     note.set("user", Parse.User.current().get("username"));
     note.set("timestamp", t);
     note.set("identifier", t);
@@ -70,8 +71,11 @@ class NoteComp extends Component {
       })
   }
 
-  updateNote(note, text) {
+  updateNote(note, text, title) {
+      if(text === note.get("data") && title === note.get("title"))
+        return
       note.set("data", text);
+      note.set("title", title);
       note.set("timestamp", new Date().getTime());
       note.save(null, {
           success: (note) => {

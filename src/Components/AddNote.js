@@ -7,15 +7,21 @@ class AddNote extends Component {
     super(props);
 
     this.state = {
-        text: ""
+        text: "",
+        title: ""
     }
 
     this.textChange = this.textChange.bind(this)
+    this.titleChange = this.titleChange.bind(this)
     this.addNote = this.addNote.bind(this)
   }
 
   addNote() {
-      this.props.addNewNote(this.state.text)
+      this.setState({
+        text: "",
+        title: ""
+      })
+      this.props.addNewNote(this.state.text, this.state.title)
   }
 
   textChange(event) {
@@ -24,11 +30,18 @@ class AddNote extends Component {
       })
   }
 
+  titleChange(event) {
+      this.setState({
+        title: event.target.value
+      })
+  }
+
   render() {
       return (
         <Container textAlign="center">
           <Form onSubmit={this.addNote}>
-            <TextArea placeholder="Add a note" style={{ minHeight: 100, marginBottom: '30px', marginTop: '30px' }} value={this.state.text} onChange={this.textChange}/>
+            <Form.Input placeholder="Title" style={{marginTop: '10px' }} value={this.state.title} onChange={this.titleChange}/>
+            <TextArea placeholder="Description" style={{ minHeight: 100, marginBottom: '30px', marginTop: '10px' }} value={this.state.text} onChange={this.textChange}/>
             <Form.Field control={Button}>Add</Form.Field>
           </Form>
         </Container>

@@ -21,10 +21,14 @@ class NotesList extends Component {
   render() {
       this.props.notesList.reverse()
     var renderNotesList = this.props.notesList.map((note) => {
+        var noteTitle = <div></div>
+        if(note.get("title"))
+            noteTitle = <div><List.Header style={{float: "left"}}>{note.get("title")}</List.Header><br/></div>
         return (
-            <List.Item key={note.id} style={{padding: '10px', paddingBottom: '2px'}}>
+            <List.Item key={note.id} style={{padding: '10px', paddingBottom: '10px', paddingTop: '10px'}}>
                 <List.Content>
-                    <List.Header style={{float: "left"}}>{note.get("data")}</List.Header>
+                    {noteTitle}
+                    <List.Description style={{float: "left", maxWidth: '1000px', textAlign:'left', marginTop: '5px'}}>{note.get("data")}</List.Description>
                     <Button negative icon style={{float: "right"}} onClick={() => this.deleteNote(note)}>
                         <Icon name='remove' />
                     </Button>
