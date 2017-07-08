@@ -52,15 +52,22 @@ class App extends Component {
     var user = <div></div>
     var notecomp = <div></div>
     if(this.state.logStatus) {
-      user = <Menu.Item header>{Parse.User.current().get("username")}</Menu.Item>;
+      user = <Menu.Item header style={{float: 'left'}}>{Parse.User.current().get("username")}</Menu.Item>;
       notecomp = <NoteComp />
+    }
+
+    function getMenuSize() {
+      if(window.innerWidth > 500)
+        return "massive"
+      else
+        return "small"
     }
 
     return (
       <div className="App">
-        <Menu pointing secondary size="massive">
+        <Menu pointing secondary size={getMenuSize()}>
           <Menu.Item header>My Notes</Menu.Item>
-          {user}
+            {user}
           <Menu.Menu position="right">
             <Menu.Item name='Log Out' onClick={this.logOut}/>
           </Menu.Menu>

@@ -4,6 +4,7 @@ import { Segment } from 'semantic-ui-react';
 import NotesList from './Components/NotesList';
 import AddNote from './Components/AddNote';
 import EditNote from './Components/EditNote';
+import MediaQuery from 'react-responsive';
 
 class NoteComp extends Component {
 
@@ -20,6 +21,7 @@ class NoteComp extends Component {
     this.updateNote = this.updateNote.bind(this)
     this.cancelUpdate = this.cancelUpdate.bind(this)
     this.deleteNote = this.deleteNote.bind(this)
+    this.getComponent = this.getComponent.bind(this)
     this.updateList()
   }
 
@@ -106,17 +108,28 @@ class NoteComp extends Component {
       })
   }
 
-  render() {
+  getComponent(compStyle = {segmentStyle: {margin: "30px"}}) {
       var editNoteElement = <EditNote updateNote={this.updateNote} tobeUpdated={this.state.toUpdate} cancelUpdate={this.cancelUpdate}/>
       if(this.state.toUpdate === null)
         editNoteElement = <div></div>
-
-      return (
-        <Segment style={{margin: "30px"}}>
-            <AddNote addNewNote={this.addNewNote}/>
-            <NotesList notesList={this.state.notesList} editNote={this.editNote} deleteNote={this.deleteNote} />
+    return (<Segment style={compStyle.segmentStyle}>
+                <AddNote addNewNote={this.addNewNote}/>
+                <NotesList notesList={this.state.notesList} editNote={this.editNote} deleteNote={this.deleteNote} />
             {editNoteElement}
-        </Segment>
+    </Segment>)
+  }
+
+  render() {
+      return (
+          <MediaQuery minWidth={500}>
+            {(matches) => {
+                if (matches) {
+                    return this.getComponent()
+                } else {
+                    return this.getComponent({segmentStyle: {margin: "15px"}})
+                }
+            }}
+        </MediaQuery>
       )
   }
 
