@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { List, Button, Icon } from 'semantic-ui-react';
 import MediaQuery from 'react-responsive';
+import linkifyHtml from 'linkifyjs/html';
 
 class NotesList extends Component {
   
@@ -30,13 +31,15 @@ class NotesList extends Component {
       this.props.notesList.reverse()
       var renderNotesList = this.props.notesList.map((note) => {
         var noteTitle = <div></div>
+        //var noteData = linkifyHtml(note.get("data"))
+        var noteData = <span dangerouslySetInnerHTML={{__html: linkifyHtml(note.get("data"))}}/>
         if(note.get("title"))
             noteTitle = <div><List.Header style={{float: "left"}}>{note.get("title")}</List.Header><br/></div>
         return (
             <List.Item key={note.id} style={mainStyle.itemStyle}>
                 <List.Content>
                     {noteTitle}
-                    <List.Description style={mainStyle.descriptionStyle}>{note.get("data")}</List.Description>
+                    <List.Description style={mainStyle.descriptionStyle}>{noteData}</List.Description>
                     <Button negative icon style={{float: "right", margin: '5px'}} onClick={() => this.deleteNote(note)}>
                         <Icon name='remove' />
                     </Button>

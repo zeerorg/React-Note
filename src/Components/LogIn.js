@@ -50,6 +50,7 @@ class LogIn extends Component {
   }
 
   logIn(event) {
+    event.preventDefault();
     Parse.User.logIn(this.state.email, this.state.password, {
       success: (user) => {
         console.log("User signed in ")
@@ -85,7 +86,8 @@ class LogIn extends Component {
       console.log("No User :-(")
   }
 
-  signUp() {
+  signUp(event) {
+    event.preventDefault();
     var user = new Parse.User();
     user.set("username", this.state.email);
     user.set("password", this.state.password);
